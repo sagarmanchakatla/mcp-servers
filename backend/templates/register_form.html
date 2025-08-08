@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Register your business</title>
+  </head>
+  <body>
+    <h1>Register your business</h1>
+    <form action="/register/submit" method="post">
+      <input type="hidden" name="token" value="{{ token }}" />
+      <h2>Owner</h2>
+      <label>Owner name: <input name="owner_name" required /></label><br />
+      <label
+        >Contact (phone/email): <input name="owner_contact" required /></label
+      ><br />
+
+      <h2>Business</h2>
+      <label>Business name: <input name="business_name" required /></label
+      ><br />
+      <label
+        >Business type:
+        <select name="business_type">
+          <option>general_store</option>
+          <option>pharmacy</option>
+          <option>restaurant</option>
+          <option>grocery</option>
+          <option>others</option>
+        </select> </label
+      ><br />
+      <label
+        >Description:<br />
+        <textarea name="description" rows="3" cols="40"></textarea></label
+      ><br />
+      <label>Address: <input name="address" /></label><br />
+      <label>City: <input name="city" /></label><br />
+      <label>Postal code: <input name="postal_code" /></label><br />
+      <label
+        >Delivery available:
+        <input type="checkbox" name="delivery_available" value="1" /> </label
+      ><br />
+      <label
+        >Delivery radius (km):
+        <input name="delivery_radius" type="number" step="0.1" /></label
+      ><br />
+      <label
+        >Payment modes (comma separated): <input name="payment_modes" /></label
+      ><br />
+      <h3>Initial Inventory (one row example)</h3>
+      <p>To add more items after registering, use the MCP tools.</p>
+      <label>Item name: <input name="item_name" /></label><br />
+      <label>SKU: <input name="item_sku" /></label><br />
+      <label>Category: <input name="item_category" /></label><br />
+      <label>Price: <input name="item_price" type="number" step="0.01" /></label
+      ><br />
+      <label>Qty: <input name="item_qty" type="number" step="1" /></label><br />
+      <label>Unit: <input name="item_unit" /></label><br />
+
+      <button type="submit">Submit Registration</button>
+    </form>
+  </body>
+</html>
