@@ -57,6 +57,7 @@ async def get_db():
     return mongo_client["productsDB"]  # ✅ correct name
 
 # -------------------- Tools --------------------
+# -------------------- Tools --------------------
 @mcp.tool(description="Retrieve product information from MongoDB")
 async def get_products(
     category: Annotated[Optional[str], Field(description="Filter products by category")] = None,
@@ -77,7 +78,7 @@ async def get_products(
 
         results = []
         async for doc in cursor:
-            doc.pop("_id", None)  # Remove ObjectId
+            doc.pop("_id", None)
             try:
                 results.append(Product(**doc))
             except Exception as e:
@@ -89,6 +90,90 @@ async def get_products(
     except Exception as e:
         logger.exception("MongoDB query failed")
         raise McpError(ErrorData(code=INTERNAL_ERROR, message=f"MongoDB error: {e}"))
+
+
+@mcp.tool(description="Insert a new product into MongoDB")
+async def insert_product(
+    id: Annotated[int, Field(description="Unique integer ID for the product")],
+    name: Annotated[str, Field(description="Name of the product")],
+    description: Annotated[str, Field(description="Product description")],
+    price: Annotated[int, Field(description="Product price in ₹")],
+    category: Annotated[Optional[str], Field(description="Optional category of the product")] = None
+) -> str:
+    """Insert a new product into MongoDB."""
+    try:
+        db = await get_db()
+        existing = await db["products"].find_one({"id": id})
+        if existing:
+            return f"❌ Product with id {id} already exists."
+
+        product_data = {
+            "id": id,
+            "name": name,
+            "description": description,
+            "price": price,
+        }
+        if category:
+            product_data["category"] = category
+
+        await db["products"].insert_one(product_data)
+        return f"✅ Product '{name}' inserted successfully."
+
+    except Exception as e:
+        logger.exception("Insert failed")
+        return f"❌ Failed to insert product: {e}"
+
+
+@mcp.tool(description="Update an existing product in MongoDB")
+async def update_product(
+    id: Annotated[int, Field(description="ID of the product to update")],
+    name: Annotated[Optional[str], Field(description="Updated name of the product")] = None,
+    description: Annotated[Optional[str], Field(description="Updated description of the product")] = None,
+    price: Annotated[Optional[int], Field(description="Updated price in ₹")] = None,
+    category: Annotated[Optional[str], Field(description="Updated category of the product")] = None
+) -> str:
+    """Update product details by ID."""
+    try:
+        db = await get_db()
+        update_fields = {}
+        if name is not None:
+            update_fields["name"] = name
+        if description is not None:
+            update_fields["description"] = description
+        if price is not None:
+            update_fields["price"] = price
+        if category is not None:
+            update_fields["category"] = category
+
+        if not update_fields:
+            return "❌ No fields to update."
+
+        result = await db["products"].update_one({"id": id}, {"$set": update_fields})
+        if result.matched_count == 0:
+            return f"❌ Product with id {id} not found."
+
+        return f"✅ Product {id} updated successfully."
+
+    except Exception as e:
+        logger.exception("Update failed")
+        return f"❌ Failed to update product: {e}"
+
+
+@mcp.tool(description="Delete a product from MongoDB by ID")
+async def delete_product(
+    id: Annotated[int, Field(description="ID of the product to delete")]
+) -> str:
+    """Delete a product by ID."""
+    try:
+        db = await get_db()
+        result = await db["products"].delete_one({"id": id})
+        if result.deleted_count == 0:
+            return f"❌ Product with id {id} not found."
+        return f"✅ Product {id} deleted successfully."
+
+    except Exception as e:
+        logger.exception("Delete failed")
+        return f"❌ Failed to delete product: {e}"
 
 @mcp.tool
 async def validate() -> str:
