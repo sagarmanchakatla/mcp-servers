@@ -1,0 +1,7 @@
+asyncpg
+python-dotenv
+fastmcp
+markdownify
+httpx
+readabilipy
+pydantic
