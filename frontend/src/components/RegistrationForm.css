@@ -1,0 +1,82 @@
+form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+  font-family: Arial, sans-serif;
+}
+
+h3 {
+  margin-bottom: 16px;
+  color: #333;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 6px;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #444;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #4caf50;
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+  margin-left: 10px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+select[multiple] {
+  height: auto;
+  min-height: 120px;
+  font-size: 0.9rem;
+}

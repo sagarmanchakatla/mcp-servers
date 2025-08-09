@@ -98,7 +98,9 @@ def get_sqlite_url(dbfile: str = "shop.db"):
     return f"sqlite+aiosqlite:///{dbfile}"
 
 # For Neon/Postgres later you can replace with env var
-DATABASE_URL = os.getenv("DATABASE_URL", get_sqlite_url())
+# DATABASE_URL = os.getenv("DATABASE_URL", 'postgresql+asyncpg://neondb_owner:npg_gWVqFNe8jxZ2@ep-polished-union-ad75q6hu-pooler.c-2.us-east-1.aws.neon.tech/neondb')
+
+DATABASE_URL = get_sqlite_url()
 
 engine = create_async_engine(DATABASE_URL, echo=False, future=True)
 AsyncSessionLocal = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)

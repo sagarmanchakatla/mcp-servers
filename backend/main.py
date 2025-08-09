@@ -18,6 +18,7 @@ from starlette.responses import HTMLResponse, RedirectResponse, PlainTextRespons
 from sqlalchemy.future import select
 from sqlalchemy import func
 
+
 from models import (
     init_db,
     AsyncSessionLocal,
